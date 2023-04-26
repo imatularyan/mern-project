@@ -9,38 +9,6 @@ router.get("/", (req, res) => {
   res.send("hello router");
 });
 
-// using promises
-
-// router.post("/register", (req, res) => {
-//   const { name, email, phone, work, password, cpassword } = req.body;
-
-//   if (!name || !email || !phone || !work || !password || !cpassword) {
-//     return res.status(422).json({ error: "Please! fill all required fields." });
-//   }
-
-//   User.findOne({ email: email })
-//     .then((userExist) => {
-//       if (userExist) {
-//         return res.status(422).json({ error: "Email is already registered." });
-//       }
-//       const user = new User({ name, email, phone, work, password, cpassword });
-
-//       user
-//         .save()
-//         .then(() =>
-//           res.status(201).json({ message: "Registration successful." })
-//         )
-//         .catch((err) =>
-//           res.status(500).json({ message: "Registration failed" })
-//         );
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-// });
-
-// Async-Await
-
 router.post("/register", async (req, res) => {
   const { name, email, phone, work, password, cpassword } = req.body;
 
@@ -76,8 +44,18 @@ router.post("/login", async (req, res) => {
     }
 
     const userLogin = await User.findOne({ email: email });
+
     if (userLogin) {
       const isMatch = await bcrypt.compare(password, userLogin.password);
+
+      const token = await userLogin.generateAuthToken();
+      console.log(token);
+
+      res.cookie("jwtoken", token),
+        {
+          expires: new Date(Date.now() + 25892000000),
+          httpOnly: true,
+        };
 
       if (!isMatch) {
         res.status(400).json({ error: "Invalid credentials" });
