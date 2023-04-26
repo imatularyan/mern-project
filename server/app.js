@@ -1,16 +1,15 @@
+const dotenv = require("dotenv").config();
 const mongoose = require("mongoose");
 const express = require("express");
-const port = process.env.PORT || 3000;
 const app = express();
+const PORT = process.env.PORT;
+require("./db/conn");
+// const User = require("./model/userSchema");
 
-const DB = "";
+app.use(express.json());
 
-mongoose
-  .connect(DB)
-  .then(() => {
-    console.log("connection successful");
-  })
-  .catch((err) => console.log("no connection"));
+// link router files to make our routes easy
+app.use(require("./router/auth"));
 
 // middleware
 const middleware = (req, res, next) => {
@@ -18,9 +17,9 @@ const middleware = (req, res, next) => {
   next();
 };
 
-app.get("/", (req, res) => {
-  res.send("hello world");
-});
+// app.get("/", (req, res) => {
+//   res.send("hello world app");
+// });
 
 app.get("/about", middleware, (req, res) => {
   res.send("About page");
@@ -38,6 +37,6 @@ app.get("/signup", (req, res) => {
   res.send("SignUp page");
 });
 
-app.listen(port, () => {
-  console.log(` listening on ${port}`);
+app.listen(PORT, () => {
+  console.log(` listening on ${PORT}`);
 });
