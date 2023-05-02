@@ -1,5 +1,4 @@
-const dotenv = require("dotenv").config();
-const mongoose = require("mongoose");
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const PORT = process.env.PORT;
@@ -11,19 +10,9 @@ app.use(express.json());
 // link router files to make our routes easy
 app.use(require("./router/auth"));
 
-// middleware
-const middleware = (req, res, next) => {
-  console.log("middleware");
-  next();
-};
-
-// app.get("/", (req, res) => {
-//   res.send("hello world app");
+// app.get("/about", (req, res) => {
+//   res.send("About page");
 // });
-
-app.get("/about", middleware, (req, res) => {
-  res.send("About page");
-});
 
 app.get("/contact", (req, res) => {
   res.send("Contact page");
@@ -38,5 +27,5 @@ app.get("/signup", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(` listening on ${PORT}`);
+  console.log(`Backend server ➡ http://localhost:${PORT}`);
 });

@@ -1,4 +1,3 @@
-import "bootstrap/dist/css/bootstrap.css";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
@@ -44,7 +43,7 @@ const Navbar = () => {
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/signup">
-                Registration
+                Register
               </Link>
             </li>
           </ul>

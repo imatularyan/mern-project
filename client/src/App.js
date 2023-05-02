@@ -4,21 +4,44 @@ import About from "./components/About";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Contact from "./components/Contact";
-import { Route, Routes } from "react-router-dom";
+import { Outlet, createBrowserRouter } from "react-router-dom";
 
 function App() {
   return (
     <>
       <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-      </Routes>
+      <Outlet />
     </>
   );
 }
+
+export const appRouter = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    children: [
+      {
+        path: "",
+        element: <Home />,
+      },
+      {
+        path: "/about",
+        element: <About />,
+      },
+      {
+        path: "/contact",
+        element: <Contact />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/signup",
+        element: <Signup />,
+      },
+    ],
+  },
+]);
 
 export default App;

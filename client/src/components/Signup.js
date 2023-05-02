@@ -1,133 +1,141 @@
+import React, { useState } from "react";
+import signupimg from "../assets/image/signup.svg";
+import { useNavigate } from "react-router-dom";
+
 const Signup = () => {
+  const navigate = useNavigate();
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    work: "",
+    password: "",
+    cpassword: "",
+  });
+
+  let name, value;
+
+  const handleInputs = (e) => {
+    name = e.target.name;
+    value = e.target.value;
+    setUser({ ...user, [name]: value });
+  };
+
+  const PostData = async (e) => {
+    e.preventDefault();
+    const { name, email, phone, work, password, cpassword } = user;
+    const res = await fetch("/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        phone,
+        work,
+        password,
+        cpassword,
+      }),
+    });
+    const data = res.json();
+    if (res.status === 422 || !data) {
+      window.alert("Registration failed!");
+    } else {
+      window.alert("Registration successful");
+
+      navigate("/login");
+    }
+  };
+
   return (
     <>
-      <div class="container col-xl-10 col-xxl-8 px-4 py-5">
-        <div class="row align-items-center g-lg-5 py-5">
-          <div class="col-md-10 mx-auto col-lg-5 w-100">
-            <form
-              action="/register"
-              method="POST"
-              class="p-5 p-md-5 border rounded-3 bg-body-tertiary container shadow"
-            >
-              <div class="row">
-                <div class="form-check mb-3 w-50">
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="floatingInput"
-                    placeholder="First name"
-                    value=""
-                    name="firstname"
-                  />
-                </div>
-                <div class="form-check mb-3 w-50">
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="floatingInput"
-                    placeholder="Last name"
-                    value=""
-                    name="lastname"
-                  />
-                </div>
+      <div className="container px-4 py-5">
+        <div className="px-5 container">
+          <div className="w-75 mx-auto shadow p-3 bg-body-tertiary rounded-3 border row">
+            <form method="POST" className="container w-50">
+              <h2 className=" text-center mb-4">Sign Up</h2>
+              <div className="form-check mb-3">
+                <input
+                  type="text"
+                  className="form-control p-3"
+                  placeholder="Name"
+                  name="name"
+                  value={user.name}
+                  onChange={handleInputs}
+                />
               </div>
-              <div class="row">
-                <div class="form-check mb-3 w-50">
-                  <input
-                    type="email"
-                    class="form-control"
-                    id="floatingInput"
-                    placeholder="name@example.com"
-                    value=""
-                    name="email"
-                  />
-                </div>
-                <div class="form-check mb-3 d-flex gap-3 w-50">
-                  <div class="form-check">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      name="gender"
-                      id="flexRadioDefault1"
-                    />
-                    <label class="form-check-label" for="flexRadioDefault1">
-                      Male
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      name="gender"
-                      id="flexRadioDefault2"
-                    />
-                    Female
-                  </div>
-                </div>
+              <div className="form-check mb-3 ">
+                <input
+                  type="email"
+                  className="form-control p-3"
+                  placeholder="
+                    Email"
+                  name="email"
+                  autoComplete="on"
+                  value={user.email}
+                  onChange={handleInputs}
+                />
               </div>
-              <div class="row">
-                <div class="form-check mb-3 w-50">
-                  <input
-                    type="phone"
-                    class="form-control"
-                    id="floatingInput"
-                    placeholder="Phone"
-                    value=""
-                    name="phone"
-                  />
-                </div>
-                <div class="form-check mb-3 w-50">
-                  <input
-                    type="phone"
-                    class="form-control"
-                    id="floatingInput"
-                    placeholder="Age"
-                    value=""
-                    name="age"
-                  />
-                </div>
+              <div className="form-check mb-3 ">
+                <input
+                  type="text"
+                  className="form-control p-3"
+                  placeholder="Work"
+                  name="work"
+                  autoComplete="on"
+                  value={user.work}
+                  onChange={handleInputs}
+                />
               </div>
-              <div class="row">
-                <div class="form-check mb-3 w-50">
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="floatingPassword"
-                    placeholder="Password"
-                    name="password"
-                  />
-                </div>
-
-                <div class="form-check mb-3 w-50">
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="floatingPassword"
-                    placeholder="Confirm Password"
-                    value=""
-                    name="confirmpassword"
-                  />
-                </div>
+              <div className="form-check mb-3 ">
+                <input
+                  type="phone"
+                  className="form-control p-3"
+                  placeholder="Phone"
+                  name="phone"
+                  value={user.phone}
+                  onChange={handleInputs}
+                />
+              </div>
+              <div className="form-check mb-3 ">
+                <input
+                  type="password"
+                  className="form-control p-3"
+                  placeholder="Password"
+                  name="password"
+                  value={user.password}
+                  onChange={handleInputs}
+                />
               </div>
 
-              <div class="checkbox mb-3 w-50">
-                <label>
-                  <input type="checkbox" value="remember-me" />
-                  Remember me
-                </label>
+              <div className="form-check mb-3 ">
+                <input
+                  type="password"
+                  className="form-control p-3"
+                  placeholder="Confirm Password"
+                  name="cpassword"
+                  value={user.cpassword}
+                  onChange={handleInputs}
+                />
               </div>
-              <button
-                class="w-100 btn btn-lg btn-primary"
-                type="submit"
-                value="register"
-              >
-                Register
-              </button>
-              <hr class="my-4" />
-              <small class="text-body-secondary">
+              <div className="form-check mb-3 ">
+                <button
+                  className=" btn btn-lg btn-primary w-100"
+                  type="submit"
+                  onClick={PostData}
+                >
+                  Signup
+                </button>
+              </div>
+              <hr className="my-4" />
+              <small className="text-body-secondary">
                 By clicking Sign up, you agree to the terms of use.
               </small>
             </form>
+            <div className="w-50 mh-100 d-flex justify-content-center align-items-center">
+              <img className=" w-75" src={signupimg} alt="signup" />
+            </div>
           </div>
         </div>
       </div>

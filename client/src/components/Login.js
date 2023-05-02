@@ -1,45 +1,73 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const loginUser = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch("/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+      const json = await res.json();
+      console.log("data: ", json);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <>
-      <div class="container col-xl-10 col-xxl-8 px-4 py-5">
-        <div class="row align-items-center g-lg-5 py-5">
-          <div class="col-md-10 mx-auto col-lg-5 w-50">
+      <div className="container col-xl-10 col-xxl-8 px-4 py-5">
+        <div className="row align-items-center g-lg-5 py-5">
+          <div className="col-md-10 mx-auto col-lg-5 w-50">
             <form
-              action="/login"
               method="POST"
-              class=" w-100 d-flex flex-column gap-3 shadow bg-body-tertiary rounded-3 p-4 "
+              className=" w-100 d-flex flex-column gap-3 shadow bg-body-tertiary rounded-3 p-4 "
             >
-              <h1 class="h3 mb-4 fw-normal">Please sign in</h1>
-              <div class="form-floating">
+              <h1 className="h3 mb-4 fw-normal">Log In</h1>
+              <div className="form-floating">
                 <input
                   type="email"
-                  class="form-control"
+                  className="form-control"
                   id="floatingInput"
                   placeholder="name@example.com"
                   name="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
-                <label for="floatingInput">Email address</label>
+                <label htmlFor="floatingInput">Email address</label>
               </div>
-              <div class="form-floating">
+              <div className="form-floating">
                 <input
                   type="password"
-                  class="form-control"
+                  className="form-control"
                   id="floatingPassword"
                   placeholder="Password"
                   name="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
-                <label for="floatingPassword">Password</label>
+                <label htmlFor="floatingPassword">Password</label>
               </div>
-
-              <div class="checkbox mb-3">
-                <label>
-                  <input type="checkbox" value="remember-me" /> Remember me
-                </label>
-              </div>
-              <button class="w-100 btn btn-lg btn-primary" type="submit">
-                Sign in
+              <button
+                className="w-100 btn btn-lg btn-primary"
+                type="submit"
+                value="Login"
+                onClick={loginUser}
+              >
+                Submit
               </button>
-              <p class="mt-5 mb-3 text-body-secondary">© 2017–2023</p>
             </form>
           </div>
         </div>
